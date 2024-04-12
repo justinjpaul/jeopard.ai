@@ -1,0 +1,23 @@
+version: '1.0'
+
+services:
+  app:
+    container_name: japp
+    build:
+      context: ./app
+    volumes:
+      - ./app/public:/app/public
+      - ./app/src:/app/src
+      - ./app/package.json:/app/package.json
+    ports:
+      - 8080:8080
+  api:
+    container_name: japi
+    build:
+      context: ./api
+    volumes:
+      - ./api/:/app/
+    ports:
+      - 5050:5050
+    env_file:
+      - ./api/.env
