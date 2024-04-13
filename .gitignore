@@ -161,3 +161,5 @@ cython_debug/
 
 api/data
 api/tmp
+
+.DS_Store
