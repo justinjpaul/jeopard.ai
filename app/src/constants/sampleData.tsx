@@ -1,7 +1,190 @@
 const sampleData = [
   {
+    category: "Computational Models",
+    questions: [
+      {
+        answer:
+          "This is a theoretical machine that can simulate any computer algorithm, making it a fundamental concept in computer science.",
+        question: "What is a Turing Machine?",
+      },
+      {
+        answer:
+          "This type of Turing Machine has the ability to explore multiple computational paths simultaneously, leading to an alternate way of defining the complexity class NP.",
+        question: "What is a Non-deterministic Turing Machine?",
+      },
+      {
+        answer:
+          "This model of computation allows for direct access to any memory location, unlike the sequential access of a standard Turing machine.",
+        question: "What is a Random-Access Memory (RAM) model?",
+      },
+      {
+        answer:
+          "A Turing machine with two tapes can decide the PALINDROME language in linear time, while a standard one-tape Turing machine requires quadratic time.",
+        question: "What is a Two-Tape Turing Machine?",
+      },
+      {
+        answer:
+          "This thesis suggests that any problem solvable in polynomial time on one realistic model of computation can be solved in polynomial time on any other realistic model.",
+        question: "What is the Extended Church-Turing Thesis?",
+      },
+    ],
+  },
+  {
+    category: "Complexity Classes",
+    questions: [
+      {
+        answer:
+          "This class encompasses all decision problems that can be solved by a Turing machine using a polynomial amount of time, relative to the input size.",
+        question: "What is P?",
+      },
+      {
+        answer:
+          "This class includes all decision problems for which a 'yes' answer can be verified in polynomial time with the help of a certificate.",
+        question: "What is NP?",
+      },
+      {
+        answer:
+          "NP-Hard problems are at least as hard as the hardest problems in NP, meaning that a polynomial-time solution to any NP-Hard problem would imply P = NP.",
+        question: "What is NP-Hard?",
+      },
+      {
+        answer:
+          "These problems are both in NP and NP-Hard, making them the 'hardest' problems in NP.",
+        question: "What is NP-Complete?",
+      },
+      {
+        answer:
+          "This refers to the class of decision problems whose complements are in NP, raising questions about its relationship to NP.",
+        question: "What is coNP?",
+      },
+    ],
+  },
+  {
+    category: "Efficient Verification",
+    questions: [
+      {
+        answer:
+          "These puzzles, such as Sudoku or crosswords, may be difficult to solve, but their solutions can be easily verified.",
+        question: "What are logic and word puzzles?",
+      },
+      {
+        answer:
+          "Checking the correctness of a claimed solution to a maze is an example of efficient verification, as it can be done in polynomial time.",
+        question: "What is maze solving?",
+      },
+      {
+        answer:
+          "Verifying a claimed minimum-weight tour for the Traveling Salesperson Problem is not known to be efficiently verifiable, unlike the decision version with a budget constraint.",
+        question: "What is the Traveling Salesperson Problem (TSP)?",
+      },
+      {
+        answer:
+          "This property of a verifier ensures that it accepts all valid instances of the language, given an appropriate certificate.",
+        question: "What is completeness?",
+      },
+      {
+        answer:
+          "This property of a verifier ensures that it rejects all invalid instances of the language, regardless of the certificate provided.",
+        question: "What is soundness?",
+      },
+    ],
+  },
+  {
+    category: "Satisfiability",
+    questions: [
+      {
+        answer:
+          "This problem asks whether there exists an assignment of truth values to variables that makes a Boolean formula evaluate to true.",
+        question: "What is the Boolean Satisfiability Problem (SAT)?",
+      },
+      {
+        answer:
+          "The Cook-Levin Theorem established that SAT is NP-Complete, making it a fundamental problem in complexity theory.",
+        question: "What is the Cook-Levin Theorem?",
+      },
+      {
+        answer:
+          "This is a Boolean formula consisting of a conjunction of clauses, each of which is a disjunction of literals.",
+        question: "What is a Conjunctive Normal Form (CNF) formula?",
+      },
+      {
+        answer:
+          "This is a CNF formula where each clause has exactly three literals.",
+        question: "What is a 3-CNF formula?",
+      },
+      {
+        answer:
+          "This variant of the satisfiability problem, where the input formula is in 3-CNF, is also NP-Complete.",
+        question: "What is 3-SAT?",
+      },
+    ],
+  },
+  {
+    category: "NP-Complete Problems",
+    questions: [
+      {
+        answer:
+          "This problem involves finding a subset of vertices in a graph such that every edge in the graph is connected to at least one vertex in the subset.",
+        question: "What is the Vertex Cover problem?",
+      },
+      {
+        answer:
+          "This problem involves finding a complete subgraph of a certain size within a given graph.",
+        question: "What is the Clique problem?",
+      },
+      {
+        answer:
+          "This problem involves finding a subset of a given set of integers that add up to a target value.",
+        question: "What is the Subset Sum problem?",
+      },
+      {
+        answer:
+          "This problem involves selecting a set of items to maximize their total value while staying within a weight limit.",
+        question: "What is the Knapsack problem?",
+      },
+      {
+        answer:
+          "This problem involves finding a path in a graph that visits each vertex exactly once.",
+        question: "What is the Hamiltonian Cycle problem?",
+      },
+    ],
+  },
+  {
+    category: "Approximation",
+    questions: [
+      {
+        answer:
+          "This type of algorithm aims to find a solution that is close to the optimal solution for an optimization problem, especially for NP-Hard problems where finding the exact solution is difficult.",
+        question: "What is an approximation algorithm?",
+      },
+      {
+        answer:
+          "This algorithm for the Vertex Cover problem repeatedly selects an edge and adds both its endpoints to the cover, achieving a 2-approximation ratio.",
+        question: "What is the double-cover algorithm?",
+      },
+      {
+        answer:
+          "This algorithm for the Maximum Cut problem iteratively moves vertices between sides of the cut to increase the cut size, until no further improvement is possible.",
+        question: "What is the local-search algorithm?",
+      },
+      {
+        answer:
+          "This combined algorithm for the Knapsack problem runs both the relatively greedy and single-greedy algorithms and chooses the better solution.",
+        question: "What is the combined-greedy algorithm?",
+      },
+      {
+        answer:
+          "This is a measure of how close an approximate solution is to the optimal solution.",
+        question: "What is the approximation ratio?",
+      },
+    ],
+  },
+];
+
+export const reactSampleData = [
+  {
     category: "TypeScript",
-    qs: [
+    questions: [
       {
         question: "What is TypeScript?",
         answer:
@@ -31,7 +214,7 @@ const sampleData = [
   },
   {
     category: "React",
-    qs: [
+    questions: [
       {
         question: "What is React?",
         answer: "React is a JavaScript library for building user interfaces.",
@@ -60,7 +243,7 @@ const sampleData = [
   },
   {
     category: "Node.js",
-    qs: [
+    questions: [
       {
         question: "What is Node.js?",
         answer:
@@ -90,7 +273,7 @@ const sampleData = [
   },
   {
     category: "MongoDB",
-    qs: [
+    questions: [
       {
         question: "What is MongoDB?",
         answer:
@@ -120,7 +303,7 @@ const sampleData = [
   },
   {
     category: "GraphQL",
-    qs: [
+    questions: [
       {
         question: "What is GraphQL?",
         answer:
@@ -150,7 +333,7 @@ const sampleData = [
   },
   {
     category: "Computer Security",
-    qs: [
+    questions: [
       {
         question: "What is computer security?",
         answer:
@@ -178,6 +361,13 @@ const sampleData = [
       },
     ],
   },
+];
+
+export const samplePlayers = [
+  { name: "Justin", score: 100, activeTurn: false },
+  { name: "Joseph", score: 150, activeTurn: true },
+  { name: "Josh", score: 80 },
+  { name: "Vance", score: 200 },
 ];
 
 export default sampleData;
