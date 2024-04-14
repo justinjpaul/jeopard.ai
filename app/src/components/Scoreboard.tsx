@@ -1,12 +1,20 @@
-import { Grid, Typography } from "@mui/joy";
+import { Grid, Input, Typography } from "@mui/joy";
 import Person from "@mui/icons-material/Person";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { playersAtom } from "../constants/recoil_state";
 
 const Scoreboard = () => {
-  const players = useRecoilValue(playersAtom);
+  const [players, setPlayers] = useRecoilState(playersAtom);
   const bestScore = Math.max(...players.map((p) => p.score));
+
+  const handleNameChange = (index: number, newName: string) => {
+    setPlayers((prevPlayers) => {
+      const updatedPlayers = [...prevPlayers];
+      updatedPlayers[index] = { ...updatedPlayers[index], name: newName };
+      return updatedPlayers;
+    });
+  };
 
   return (
     <Grid container spacing={4} alignItems="center" justifyContent="center">
@@ -19,7 +27,9 @@ const Scoreboard = () => {
               alignItems: "center",
             }}
           >
-            <Typography
+            <Input
+              value={player.name}
+              onChange={(e) => handleNameChange(index, e.target.value)}
               startDecorator={
                 player.score === bestScore && player.score !== 0 ? (
                   <MilitaryTechIcon />
@@ -33,9 +43,8 @@ const Scoreboard = () => {
                   ? "warning"
                   : "neutral"
               }
-            >
-              {player.name}
-            </Typography>
+              sx={{ width: "auto", maxWidth: "15em" }}
+            />
             <Typography level="body-lg">{player.score}</Typography>
           </div>
         </Grid>

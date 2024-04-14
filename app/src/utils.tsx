@@ -9,14 +9,15 @@ export const formatDate = (datetime: string) => {
   return formattedDate;
 };
 
-export async function fetchHelper(
+export async function fetchHelper<T>(
   url: string,
   method = "GET",
   headers = {
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
   },
-  body = null
+  body?: T,
+  handler?: (error: boolean, response: any) => void
 ) {
   console.log(body);
   try {
@@ -33,11 +34,13 @@ export async function fetchHelper(
     }
 
     const responseData = await response.json();
+    handler && handler(false, responseData); // Call handler with error = false and JSON response
     return responseData;
   } catch (error) {
     // Handle any errors that occurred during the fetch
     if (error instanceof Error) {
       console.error("Fetch error:", error.message);
+      handler && handler(true, null); // Call handler with error = true and null response
     }
     throw error;
   }

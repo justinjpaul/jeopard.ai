@@ -6,7 +6,7 @@ import { playersAtom } from "../constants/recoil_state";
 import CircularProgress from "@mui/joy/CircularProgress";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ClearIcon from "@mui/icons-material/Clear";
-// import { fetchHelper } from "../utils";
+import { fetchHelper } from "../utils";
 
 interface QuestionModalProps {
   question: string;
@@ -15,36 +15,33 @@ interface QuestionModalProps {
   setAllowModalClose: Dispatch<SetStateAction<boolean>>;
 }
 
-const CorrectOutput = () => {
-  return (
-    <Typography startDecorator={<CheckBoxIcon />} color="success">
-      You got it right!
-    </Typography>
-  );
-};
-
-const IncorrectOutput = () => {
-  return (
-    <Typography startDecorator={<ClearIcon />} color="danger">
-      Not quite...
-    </Typography>
-  );
-};
-
 const QuestionModal: React.FC<QuestionModalProps> = ({
   question,
   answer,
   points,
   setAllowModalClose,
 }) => {
-  if (false) {
-    console.log(question);
-  }
   const [selectedIndex, setSelectedIndex] = useState<number>(0); // fix later to find player with activeturn
   const [response, setResponse] = useState<string>("placeholder answer");
   const [players, setPlayers] = useRecoilState(playersAtom);
   const [isLoading, setIsLoading] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | undefined>(undefined);
+
+  const CorrectOutput = () => {
+    return (
+      <Typography startDecorator={<CheckBoxIcon />} color="success">
+        You got it right!
+      </Typography>
+    );
+  };
+
+  const IncorrectOutput = () => {
+    return (
+      <Typography startDecorator={<ClearIcon />} color="danger">
+        {question}
+      </Typography>
+    );
+  };
 
   useEffect(() => {
     if (isCorrect !== undefined) {
@@ -86,21 +83,33 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
     setResponse(event.target.value);
   };
 
+  const handler = (hadError: boolean, jsonData: any) => {
+    if (hadError || !("accepted" in jsonData)) {
+      setResponse("placeholder answer");
+      setIsLoading(false);
+      return;
+    }
+
+    setIsCorrect(jsonData.accepted);
+  };
+
   return (
     <Sheet>
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          console.log("confirmed");
           setIsLoading(true);
-          // fetchHelper()
-          console.log(response);
-
-          if (Math.random() > 0.5) {
-            setIsCorrect(true);
-          } else {
-            setIsCorrect(false);
-          }
+          const respJSON = fetchHelper(
+            "/api/contest",
+            "post",
+            undefined,
+            {
+              correct: question,
+              user: response,
+            },
+            handler
+          );
+          console.log(respJSON);
         }}
       >
         <Typography level="h2">{answer}</Typography>

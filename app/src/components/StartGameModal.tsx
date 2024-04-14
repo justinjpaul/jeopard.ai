@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   IconButton,
@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/joy";
 import Delete from "@mui/icons-material/Delete";
+// import { fetchHelper } from "../utils";
 
 interface StartGameModalProps {
   open: boolean;
@@ -17,6 +18,15 @@ interface StartGameModalProps {
 
 const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (ready) {
+      // need to update players
+      // need to
+      onClose();
+    }
+  }, [ready]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -26,9 +36,9 @@ const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
   };
 
   const handleUpload = () => {
-    // Handle file upload logic here
     console.log("Uploading files:", selectedFiles);
-    // You can send the files to your backend for processing
+    setReady(true);
+    // fetchHelper()
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -52,7 +62,7 @@ const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      // onClose={onClose}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
     >
