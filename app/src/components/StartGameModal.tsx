@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  CircularProgress,
   IconButton,
   List,
   ListItem,
@@ -9,6 +10,10 @@ import {
   Typography,
 } from "@mui/joy";
 import Delete from "@mui/icons-material/Delete";
+import { addAccessedField, fetchHelperWithFiles } from "../utils";
+import { Category } from "../types";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { gameboardAtom } from "../constants/recoil_state";
 // import { fetchHelper } from "../utils";
 
 interface StartGameModalProps {
@@ -19,10 +24,11 @@ interface StartGameModalProps {
 const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [ready, setReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [_, setGameboard] = useRecoilState(gameboardAtom);
 
   useEffect(() => {
     if (ready) {
-      // need to update players
       // need to
       onClose();
     }
@@ -35,10 +41,21 @@ const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
     }
   };
 
+  const gameGenerationHandler = (hadError: boolean, jsonData: Category[]) => {
+    setIsLoading(false);
+    console.log(hadError, jsonData);
+    if (!hadError) {
+      console.log(addAccessedField(jsonData));
+      setGameboard(addAccessedField(jsonData));
+      setReady(true);
+    } else {
+    }
+  };
+
   const handleUpload = () => {
     console.log("Uploading files:", selectedFiles);
-    setReady(true);
-    // fetchHelper()
+    setIsLoading(true);
+    fetchHelperWithFiles("/api/game", selectedFiles, gameGenerationHandler);
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -71,37 +88,41 @@ const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
           Upload Files
         </Typography>
 
-        <div className="file-upload">
-          <label htmlFor="file-upload" className="custom-file-upload">
-            <Typography
-              component="span"
-              sx={{ "&:hover": { cursor: "pointer" } }}
-            >
-              Drag and drop files here or click to select
-            </Typography>
-          </label>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            multiple
-            style={{ display: "none" }}
-            id="file-upload"
-          />
-        </div>
+        {!isLoading && (
+          <div className="file-upload">
+            <label htmlFor="file-upload" className="custom-file-upload">
+              <Typography
+                component="span"
+                sx={{ "&:hover": { cursor: "pointer" } }}
+              >
+                Drag and drop files here or click to select
+              </Typography>
+            </label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              multiple
+              style={{ display: "none" }}
+              id="file-upload"
+            />
+          </div>
+        )}
         {selectedFiles.length > 0 && (
           <List>
             {selectedFiles.map((file, index) => (
               <ListItem
                 key={index}
                 endAction={
-                  <IconButton
-                    aria-label="Delete"
-                    size="sm"
-                    color="danger"
-                    onClick={() => handleClearFile(index)}
-                  >
-                    <Delete />
-                  </IconButton>
+                  !isLoading && (
+                    <IconButton
+                      aria-label="Delete"
+                      size="sm"
+                      color="danger"
+                      onClick={() => handleClearFile(index)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  )
                 }
               >
                 {file.name}
@@ -109,14 +130,18 @@ const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
             ))}
           </List>
         )}
-        <Button
-          color="primary"
-          onClick={handleUpload}
-          disabled={selectedFiles.length === 0}
-          style={{ marginTop: "16px" }}
-        >
-          Upload
-        </Button>
+        {!isLoading ? (
+          <Button
+            color="primary"
+            onClick={handleUpload}
+            disabled={selectedFiles.length === 0 || isLoading}
+            style={{ marginTop: "16px" }}
+          >
+            Upload
+          </Button>
+        ) : (
+          <CircularProgress />
+        )}
       </ModalDialog>
     </Modal>
   );

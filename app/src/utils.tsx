@@ -1,3 +1,5 @@
+import { Category } from "./types";
+
 export const formatDate = (datetime: string) => {
   const date = new Date(datetime);
   const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -46,15 +48,34 @@ export async function fetchHelper<T>(
   }
 }
 
-interface Question {
-  question: string;
-  answer: string;
-  accessed?: boolean;
-}
+export async function fetchHelperWithFiles(
+  url: string,
+  files: File[],
+  handler: (noError: boolean, jsonData: Category[]) => void
+) {
+  try {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("file", file);
+    });
 
-interface Category {
-  category: string;
-  questions: Question[];
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to send files to Flask");
+    }
+
+    const responseData = await response.json();
+    handler(false, responseData);
+    return responseData;
+  } catch (error) {
+    console.error("Error sending files to Flask:", error);
+    handler(true, []);
+    throw error;
+  }
 }
 
 export function addAccessedField(data: Category[]) {

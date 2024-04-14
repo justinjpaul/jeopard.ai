@@ -13,7 +13,7 @@ export default function GamePage() {
   };
   return (
     <>
-      {/* <StartGameModal open={startModalOpen} onClose={onClose} /> */}
+      <StartGameModal open={startModalOpen} onClose={onClose} />
       <Jeopardy></Jeopardy>
       <Divider>
         <Chip variant="soft" color="neutral" size="md" sx={{ margin: "2em" }}>

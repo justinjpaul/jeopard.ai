@@ -6,7 +6,8 @@ import { useState } from "react";
 import QuestionModal from "./QuestionModal";
 
 import { Modal } from "@mui/joy";
-import { addAccessedField } from "../utils";
+import { gameboardAtom } from "../constants/recoil_state";
+import { useRecoilState } from "recoil";
 
 export interface QA {
   question: string;
@@ -23,13 +24,25 @@ const Jeopardy = () => {
     answer: "placeholder answer",
     points: 0,
   });
-  const [gameboard, setGameboard] = useState(addAccessedField(sampleData));
+  const [gameboard, setGameboard] = useRecoilState(gameboardAtom);
 
   const onClick = (cat_ind: number, qa_ind: number, qa: QA) => {
     setSelectedQA(qa);
     setGameboard((prev) => {
-      prev[cat_ind].questions[qa_ind].accessed = true;
-      return prev;
+      return prev.map((cat, ci) => {
+        if (ci === cat_ind) {
+          return {
+            ...cat,
+            questions: cat.questions.map((qs, qi) =>
+              qi === qa_ind
+                ? { question: qs.question, answer: qs.answer, accessed: true }
+                : qs
+            ),
+          };
+        } else {
+          return cat;
+        }
+      });
     });
     setOpen((prev) => !prev);
   };
@@ -54,7 +67,7 @@ const Jeopardy = () => {
                 <QuestionCard
                   key={`qcard-${cat}-${ind}`}
                   value={ind * 200 + 200}
-                  accessed={qa.accessed}
+                  accessed={qa.accessed ? qa.accessed : false}
                   onClick={() => {
                     if (!qa.accessed) {
                       onClick(cat_ind, ind, { ...qa, points: ind * 200 + 200 });

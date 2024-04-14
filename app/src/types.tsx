@@ -7,7 +7,7 @@ export interface Player {
 export interface Question {
   question: string;
   answer: string;
-  accessed: boolean;
+  accessed?: boolean;
 }
 
 export interface Category {
