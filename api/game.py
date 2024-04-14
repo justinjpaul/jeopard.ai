@@ -5,7 +5,6 @@ from io import BytesIO
 from datetime import datetime
 import time
 import os
-from enum import Enum
 import google.generativeai as genai
 from prompts import *
 

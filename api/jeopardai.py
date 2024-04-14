@@ -1,16 +1,17 @@
 import os
 import time
 from typing import List
-import json
+import json_repair
 from dotenv import load_dotenv
 
-load_dotenv()  
+load_dotenv()
 
 from flask import Flask, request, jsonify, Response
 from werkzeug.utils import secure_filename
 
 from game import Game, contest
 from prompts import NUM_CATEGORIES, NUM_QUESTIONS_PER_CATEGORY
+
 # from data.failed import FAILED
 
 
@@ -79,9 +80,9 @@ def _parse_game_data(resp: str):
     stripped = stripped.strip("\\")
 
     try:
-        game = json.loads(stripped)
+        game = json_repair.loads(stripped)
     except:
-        game = json.loads(stripped[8:-3])  # remove markdown
+        game = json_repair.loads(stripped[8:-3])  # remove markdown
 
     assert len(game) == NUM_CATEGORIES
 
