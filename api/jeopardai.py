@@ -43,9 +43,9 @@ def generate_game():
     try:
         game_data = _parse_game_data(gemini_resp)
     except Exception as e:
-        print(str(e))
         print(gemini_resp)
-        return Response("Gemini produced an invalid response", 500)
+        raise e
+        # return Response("Gemini produced an invalid response", 500)
 
     game.cleanup()
 

@@ -20,7 +20,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
           level="h3"
           textAlign="center"
           sx={{
-            backgroundImage: "linear-gradient(90deg, #02e8d5, #3802e8)",
+            backgroundImage: "linear-gradient(90deg, #02a3e8, #024fe8)",
             WebkitBackgroundClip: "text",
             color: "transparent",
           }}
