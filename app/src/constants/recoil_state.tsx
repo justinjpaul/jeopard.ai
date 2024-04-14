@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { Category, Player } from "../types"; // Assuming your types file is named 'types.ts' or similar
-import { addAccessedField } from "../utils";
+import { addAccessedField, generateSamplePlayers } from "../utils";
 import sampleData, { samplePlayers } from "./sampleData";
 
 export const playerAtom = atom<Player>({
@@ -14,7 +14,7 @@ export const playerAtom = atom<Player>({
 
 export const playersAtom = atom<Player[]>({
   key: "playersAtom",
-  default: samplePlayers, // fix this
+  default: generateSamplePlayers(3), // fix this
 });
 
 export const gameboardAtom = atom<Category[]>({

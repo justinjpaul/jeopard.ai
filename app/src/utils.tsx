@@ -87,3 +87,20 @@ export function addAccessedField(data: Category[]) {
     })),
   }));
 }
+
+export function generateSamplePlayers(num: number) {
+  const players = [];
+  for (let i = 1; i <= num; i++) {
+    players.push(generateSamplePlayer(i));
+  }
+  return players;
+}
+
+export function generateSamplePlayer(num: number) {
+  const player = {
+    name: `Player ${num}`,
+    score: 0,
+    activeTurn: num === 1 ? true : false,
+  };
+  return player;
+}

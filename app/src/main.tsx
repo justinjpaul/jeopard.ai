@@ -40,7 +40,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <CssVarsProvider theme={theme}>
       <RecoilRoot>
         <Sheet
-          sx={{ paddingLeft: "10px", paddingRight: "10px", margin: "none" }}
+          sx={{
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            margin: "none",
+            height: "100%",
+          }}
         >
           <Header />
           <GamePage />
