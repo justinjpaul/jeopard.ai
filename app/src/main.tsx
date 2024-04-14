@@ -44,7 +44,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             paddingLeft: "10px",
             paddingRight: "10px",
             margin: "none",
-            height: "100%",
+            height: "120vh",
           }}
         >
           <Header />
