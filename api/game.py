@@ -3,6 +3,7 @@ from typing import List, Any
 import fitz
 from io import BytesIO
 from datetime import datetime
+import time
 import os
 from enum import Enum
 import google.generativeai as genai
@@ -16,7 +17,22 @@ model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
 last_gemini_query = None
 
 
+def _wait_until_api_available():
+    global last_gemini_query
+
+    if last_gemini_query is None:
+        last_gemini_query = datetime.now()
+        return
+
+    seconds_since_last_query = (datetime.now() - last_gemini_query).seconds
+    if seconds_since_last_query < SECONDS_BETWEEN_GEMINI_REQUESTS:
+        time.sleep(SECONDS_BETWEEN_GEMINI_REQUESTS - seconds_since_last_query)
+
+    last_gemini_query = datetime.now()
+
+
 def contest(correct: str, user: str):
+    _wait_until_api_available()
     resp = model.generate_content(jeopardy_question_contest_prompt(correct, user))
 
     if "incorrect" in resp.text.lower():
@@ -44,6 +60,7 @@ class Game:
                     raise ValueError(f"Unsupported file type: {ext}")
 
     def generate(self):
+        _wait_until_api_available()
         response = model.generate_content(
             [JEOPARDY_GENERATE_GAME_PROMPT, *self.content]
         )
@@ -53,8 +70,6 @@ class Game:
     def cleanup(self):
         for f in self._gemini_files_to_cleanup:
             genai.delete_file(f.name)
-
-    def _wait_until_api_available(): ...
 
     def _upload_file(self, filename: str):
         upload_resp = genai.upload_file(path=filename)
