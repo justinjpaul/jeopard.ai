@@ -1,2 +1,2 @@
 # jeopard.ai
-The winner
+The classic gameshow with some ai flavor!
