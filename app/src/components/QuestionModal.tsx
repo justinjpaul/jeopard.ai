@@ -1,12 +1,12 @@
 import { Button, Typography, Select, Option, Input, Sheet } from "@mui/joy";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "@mui/system";
 import { useRecoilState } from "recoil";
 import { playersAtom } from "../constants/recoil_state";
-import CircularProgress from "@mui/joy/CircularProgress";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ClearIcon from "@mui/icons-material/Clear";
 import { fetchHelper } from "../utils";
+import LoadingModule from "./LoadingModule";
 
 interface QuestionModalProps {
   question: string;
@@ -149,7 +149,7 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
         </Stack>
       </form>
       {isLoading ? (
-        <CircularProgress />
+        <LoadingModule />
       ) : isCorrect ? (
         isCorrect !== undefined && <CorrectOutput />
       ) : (

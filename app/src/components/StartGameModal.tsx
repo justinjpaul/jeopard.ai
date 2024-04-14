@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  CircularProgress,
   IconButton,
   List,
   ListItem,
@@ -14,6 +13,7 @@ import { addAccessedField, fetchHelperWithFiles } from "../utils";
 import { Category } from "../types";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { gameboardAtom } from "../constants/recoil_state";
+import LoadingModule from "./LoadingModule";
 // import { fetchHelper } from "../utils";
 
 interface StartGameModalProps {
@@ -140,7 +140,7 @@ const StartGameModal: React.FC<StartGameModalProps> = ({ open, onClose }) => {
             Upload
           </Button>
         ) : (
-          <CircularProgress />
+          <LoadingModule />
         )}
       </ModalDialog>
     </Modal>

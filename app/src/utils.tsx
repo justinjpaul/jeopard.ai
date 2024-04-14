@@ -42,6 +42,7 @@ export async function fetchHelper<T>(
     // Handle any errors that occurred during the fetch
     if (error instanceof Error) {
       console.error("Fetch error:", error.message);
+      alert("Error occurred: resubmit");
       handler && handler(true, null); // Call handler with error = true and null response
     }
     throw error;
@@ -65,6 +66,7 @@ export async function fetchHelperWithFiles(
     });
 
     if (!response.ok) {
+      handler(true, []);
       throw new Error("Failed to send files to Flask");
     }
 
@@ -73,6 +75,7 @@ export async function fetchHelperWithFiles(
     return responseData;
   } catch (error) {
     console.error("Error sending files to Flask:", error);
+    alert("Error: retry uploading files");
     handler(true, []);
     throw error;
   }
