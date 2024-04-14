@@ -4,11 +4,27 @@ import fitz
 from io import BytesIO
 from datetime import datetime
 import os
+from enum import Enum
 import google.generativeai as genai
 from prompts import *
 
+SECONDS_BETWEEN_GEMINI_REQUESTS = 30
+
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
+
+last_gemini_query = None
+
+
+def contest(correct: str, user: str):
+    resp = model.generate_content(jeopardy_question_contest_prompt(correct, user))
+
+    if "incorrect" in resp.text.lower():
+        return False
+    elif "correct" in resp.text.lower():
+        return True
+    else:
+        raise ValueError("Gemini produced an invalid contest response")
 
 
 class Game:
@@ -37,6 +53,8 @@ class Game:
     def cleanup(self):
         for f in self._gemini_files_to_cleanup:
             genai.delete_file(f.name)
+
+    def _wait_until_api_available(): ...
 
     def _upload_file(self, filename: str):
         upload_resp = genai.upload_file(path=filename)

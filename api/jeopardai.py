@@ -6,7 +6,7 @@ import json
 from flask import Flask, request, jsonify, Response
 from werkzeug.utils import secure_filename
 
-from game import Game
+from game import Game, contest
 from prompts import NUM_CATEGORIES, NUM_QUESTIONS_PER_CATEGORY
 from data.failed import FAILED
 
@@ -46,6 +46,15 @@ def generate_game():
     game.cleanup()
 
     return jsonify(game_data)
+
+
+@app.route("/contest", methods=["POST"])
+def contest_question():
+    correct_question = request.json["correct"]
+    user_question = request.json["user"]
+
+    contest_result = contest(correct_question, user_question)
+    return jsonify({"accepted": contest_result})
 
 
 def _save_uploded_files():

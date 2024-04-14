@@ -39,3 +39,19 @@ order of increasing difficulty, where the final question in the list is the hard
 Respond in the following JSON format, with no text preceeding or following it.
 {_game_json_template()}
 """
+
+
+def jeopardy_question_contest_prompt(correct: str, user: str):
+    return f"""
+    You are a judge in a Jeopardy-style game. Jeopardy is a quiz show that has a unique answer-and-question format in which contestants are presented with 
+    clues in the form of answers and must phrase their responses in the form of a question. 
+
+    Please respond to a request from a jeopardy player to review their response. Remember that contestants must answer
+    in the form of a question. Do not mark a response incorrect solely for spelling errors if you can tell their
+    intent. Respond with a single word: Correct or Incorrect. Only award correct if the participant question is 
+    equivalent to the correct one.
+
+    The correct question is: {correct}
+
+    The participant question: {user}
+    """
