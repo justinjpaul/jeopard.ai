@@ -88,10 +88,18 @@ def _parse_game_data(resp: str):
 
     for category in game:
         assert "category" in category
-        assert "questions" in category
-        assert len(category["questions"]) == NUM_QUESTIONS_PER_CATEGORY
 
-        for question in category["questions"]:
+        q_field = ""
+        if "questions" in category:
+            q_field = "questions"
+        elif "question" in category:
+            q_field = "question"
+        else:
+            raise KeyError("Category missing questions")
+
+        assert len(category[q_field]) == NUM_QUESTIONS_PER_CATEGORY
+
+        for question in category[q_field]:
             assert "answer" in question
             assert "question" in question
 
