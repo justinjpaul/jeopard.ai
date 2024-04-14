@@ -1,4 +1,4 @@
-import { Grid, Input, Typography } from "@mui/joy";
+import { Grid, Input, Typography, Card, CardContent, CardCover } from "@mui/joy";
 import Person from "@mui/icons-material/Person";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import { useRecoilState } from "recoil";
@@ -43,13 +43,25 @@ const Scoreboard = () => {
                   ? "warning"
                   : "neutral"
               }
-              sx={{ width: "auto", maxWidth: "15em" }}
+              sx={{ width: "auto", maxWidth: "15em", marginBottom: "1em" }}
             />
-            <Typography level="body-lg">{player.score}</Typography>
+            <Card
+              variant="soft"
+              sx={{
+                width: "13em", paddingY: "2em", backgroundImage: "linear-gradient(50deg, #0294e8, #3802e8)"
+              }}
+            >
+              <CardContent>
+                <Typography level="h1" textAlign="center" sx={{ color: player.score >= 0 ? "white" : "red" }}>
+                  ${player.score}
+                </Typography>
+              </CardContent>
+            </Card>
           </div>
         </Grid>
-      ))}
-    </Grid>
+      ))
+      }
+    </Grid >
   );
 };
 

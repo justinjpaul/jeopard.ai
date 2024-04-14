@@ -6,7 +6,7 @@ const Header: React.FC = () => {
     <Typography
       level="h1"
       sx={{
-        backgroundImage: "linear-gradient(180deg, #cb00f5, #fd5800)",
+        backgroundImage: "linear-gradient(180deg, #02e8d5, #3802e8)",
         WebkitBackgroundClip: "text",
         color: "transparent",
         marginBottom: "1rem",
