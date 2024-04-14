@@ -20,10 +20,10 @@ const CategoryCard: React.FC<QuestionCardProps> = ({
           cursor: accessed ? "default" : "pointer",
         },
       }}
-      variant={accessed ? "solid" : "soft"}
+      variant={accessed ? "plain" : "soft"}
     >
       <CardContent>
-        <Typography level="h4" textAlign="center">
+        <Typography level="h4" textAlign="center" style={{ color: accessed ? 'transparent' : 'black' }}>
           ${value}
         </Typography>
       </CardContent>
