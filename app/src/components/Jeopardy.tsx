@@ -1,5 +1,4 @@
-import sampleData from "../constants/sampleData";
-import { Stack, Grid, ModalDialog, ModalClose } from "@mui/joy";
+import { Stack, Grid, ModalDialog, ModalClose, Button } from "@mui/joy";
 import CategoryCard from "./CategoryCard";
 import QuestionCard from "./QuestionCard";
 import { useState } from "react";
@@ -18,7 +17,7 @@ export interface QA {
 
 const Jeopardy = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [allowModalClose, setAllowModalClose] = useState<boolean>(false);
+  // const [allowModalClose, setAllowModalClose] = useState<boolean>(false);
   const [selectedQA, setSelectedQA] = useState<QA>({
     question: "placeholder question",
     answer: "placeholder answer",
@@ -84,21 +83,22 @@ const Jeopardy = () => {
         aria-describedby="modal-desc"
         open={open}
         onClose={() => {
-          if (allowModalClose) {
-            setOpen(false);
-            setAllowModalClose(false);
-          }
+          // if (allowModalClose) {
+          setOpen(false);
+          // setAllowModalClose(false);
+          // }
         }} // so can't click out of modal
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         <ModalDialog layout="center">
+          <ModalClose>Skip</ModalClose>
           <QuestionModal
             points={selectedQA.points}
             question={selectedQA.question}
             answer={selectedQA.answer}
-            setAllowModalClose={setAllowModalClose}
+            // setAllowModalClose={setAllowModalClose}
           ></QuestionModal>
-          {allowModalClose && <ModalClose />}
+          {/* {allowModalClose && <ModalClose />} */}
         </ModalDialog>
       </Modal>
     </>

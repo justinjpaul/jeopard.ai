@@ -12,14 +12,14 @@ interface QuestionModalProps {
   question: string;
   answer: string;
   points: number;
-  setAllowModalClose: Dispatch<SetStateAction<boolean>>;
+  // setAllowModalClose: Dispatch<SetStateAction<boolean>>;
 }
 
 const QuestionModal: React.FC<QuestionModalProps> = ({
   question,
   answer,
   points,
-  setAllowModalClose,
+  // setAllowModalClose,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0); // fix later to find player with activeturn
   const [response, setResponse] = useState<string>("placeholder answer");
@@ -64,7 +64,7 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
         return modifiable;
       });
       setIsLoading(false);
-      setAllowModalClose(true);
+      // setAllowModalClose(true);
     }
   }, [isCorrect]);
 

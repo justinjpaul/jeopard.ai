@@ -6,6 +6,8 @@ import {
   CardContent,
   IconButton,
   ButtonGroup,
+  Stack,
+  Sheet,
 } from "@mui/joy";
 import Person from "@mui/icons-material/Person";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
@@ -37,72 +39,82 @@ const Scoreboard = () => {
   };
 
   return (
-    <Grid
-      container
-      spacing={0}
-      alignItems="center"
-      justifyContent="center"
-      // sx={{ flexWrap: "nowrap" }}
+    <div
+      style={{
+        justifyContent: "center",
+        alignItems: "baseline",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+      }}
     >
-      {players.map((player, index) => (
-        <Grid xs={3} md={3} key={index} justifyContent="center">
-          <Input
-            placeholder={player.name}
-            onChange={(e) => handleNameChange(index, e.target.value)}
-            startDecorator={
-              player.score === bestScore && player.score !== 0 ? (
-                <MilitaryTechIcon />
-              ) : (
-                <Person />
-              )
-            }
-            endDecorator={player.activeTurn && <>*</>}
-            color={
-              player.score === bestScore && player.score !== 0
-                ? "warning"
-                : "neutral"
-            }
-            sx={{ width: "auto", maxWidth: "15em", marginBottom: "1em" }}
-          />
-          <Card
-            variant="soft"
-            sx={{
-              width: "13em",
-              paddingY: "2em",
-              backgroundImage: "linear-gradient(50deg, #0294e8, #3802e8)",
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ gridColumn: 2, justifyContent: "center" }}
+      >
+        {players.map((player, index) => (
+          <Sheet key={`player-${index}`}>
+            <Input
+              placeholder={player.name}
+              onChange={(e) => handleNameChange(index, e.target.value)}
+              startDecorator={
+                player.score === bestScore && player.score !== 0 ? (
+                  <MilitaryTechIcon />
+                ) : (
+                  <Person />
+                )
+              }
+              endDecorator={player.activeTurn && <>*</>}
+              color={
+                player.score === bestScore && player.score !== 0
+                  ? "warning"
+                  : "neutral"
+              }
+              sx={{ width: "auto", maxWidth: "15em", marginBottom: "1em" }}
+            />
+            <Card
+              variant="soft"
+              sx={{
+                width: "auto",
+                maxWidth: "13em",
+                paddingY: "2em",
+                backgroundImage: "linear-gradient(50deg, #0294e8, #3802e8)",
+              }}
+            >
+              <CardContent>
+                <Typography
+                  level="h1"
+                  textAlign="center"
+                  sx={{ color: player.score >= 0 ? "white" : "red" }}
+                >
+                  ${player.score}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Sheet>
+        ))}
+      </Stack>
+      <Sheet sx={{ gridColumn: 3, justifySelf: "flex-end" }}>
+        <ButtonGroup variant="solid" sx={{ marginLeft: "1em" }}>
+          <IconButton
+            disabled={players.length <= 1}
+            onClick={() => {
+              removePlayer();
             }}
           >
-            <CardContent>
-              <Typography
-                level="h1"
-                textAlign="center"
-                sx={{ color: player.score >= 0 ? "white" : "red" }}
-              >
-                ${player.score}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-      <ButtonGroup variant="soft">
-        <IconButton
-          disabled={players.length <= 1}
-          onClick={() => {
-            removePlayer();
-          }}
-        >
-          <HighlightOffIcon />
-        </IconButton>
-        <IconButton
-          disabled={players.length >= 3}
-          onClick={() => {
-            addPlayer();
-          }}
-        >
-          <AddCircleIcon />
-        </IconButton>
-      </ButtonGroup>
-    </Grid>
+            <HighlightOffIcon />
+          </IconButton>
+          <IconButton
+            disabled={players.length >= 4}
+            onClick={() => {
+              addPlayer();
+            }}
+          >
+            <AddCircleIcon />
+          </IconButton>
+        </ButtonGroup>
+      </Sheet>
+    </div>
   );
 };
 

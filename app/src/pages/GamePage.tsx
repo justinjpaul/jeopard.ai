@@ -20,7 +20,12 @@ export default function GamePage() {
           Scoreboard
         </Chip>
       </Divider>
-      <div className="score" style={{ maxWidth: "75%", margin: "auto" }}>
+      <div
+        className="score"
+        style={{
+          margin: "auto",
+        }}
+      >
         <Scoreboard></Scoreboard>
       </div>
     </>
