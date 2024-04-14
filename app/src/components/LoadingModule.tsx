@@ -1,22 +1,28 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 // @ts-ignore
 import useSound from "use-sound";
 import song from "../assets/jeopardy.mp3";
-import { Sheet } from "@mui/joy";
+import { Sheet, Typography } from "@mui/joy";
 
 function LoadingModule() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [play] = useSound(song, {
+  const [play, { stop }] = useSound(song, {
     volume: 0.5,
     loop: true,
     autoplay: true,
-    onload: () => setIsLoading(false),
     onError: () => {
       console.error("Error loading music track");
-      setIsLoading(false);
     },
   });
+
+  const jokes = [
+    "do do do do do do do do do do do do",
+    "What do you call a computer superhero? A screen saver!",
+    "Why don't skeletons fight each other? They don't have the guts!",
+    "How do you make an egg-roll? You push it!",
+    "Did you hear the rumor about butter? Well, I'm not going to go spreading it!",
+  ];
+  const [currentJokeIndex, setCurrentJokeIndex] = useState(0);
 
   useEffect(() => {
     return () => {
@@ -24,10 +30,21 @@ function LoadingModule() {
     };
   }, [play]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentJokeIndex((prevIndex) => (prevIndex + 1) % jokes.length);
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+      stop({ id: "loading-audio" });
+    };
+  }, [stop]);
+
   return (
     <Sheet>
       <CircularProgress />
-      <p>Loading...</p>
+      <Typography>{jokes[currentJokeIndex]}</Typography>
     </Sheet>
   );
 }

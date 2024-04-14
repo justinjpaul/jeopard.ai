@@ -11,7 +11,7 @@ import {
 import Delete from "@mui/icons-material/Delete";
 import { addAccessedField, fetchHelperWithFiles } from "../utils";
 import { Category } from "../types";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { gameboardAtom } from "../constants/recoil_state";
 import LoadingModule from "./LoadingModule";
 // import { fetchHelper } from "../utils";
