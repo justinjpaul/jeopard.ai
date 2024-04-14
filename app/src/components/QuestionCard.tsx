@@ -23,7 +23,11 @@ const CategoryCard: React.FC<QuestionCardProps> = ({
       variant={accessed ? "plain" : "soft"}
     >
       <CardContent>
-        <Typography level="h4" textAlign="center" style={{ color: accessed ? 'transparent' : 'black' }}>
+        <Typography
+          level="h4"
+          textAlign="center"
+          style={{ color: accessed ? "transparent" : "common" }}
+        >
           ${value}
         </Typography>
       </CardContent>
