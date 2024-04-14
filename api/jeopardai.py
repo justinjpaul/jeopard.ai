@@ -2,13 +2,16 @@ import os
 import time
 from typing import List
 import json
+from dotenv import load_dotenv
+
+load_dotenv()  
 
 from flask import Flask, request, jsonify, Response
 from werkzeug.utils import secure_filename
 
 from game import Game, contest
 from prompts import NUM_CATEGORIES, NUM_QUESTIONS_PER_CATEGORY
-from data.failed import FAILED
+# from data.failed import FAILED
 
 
 app = Flask(__name__)
