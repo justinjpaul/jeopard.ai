@@ -29,8 +29,12 @@ Jeopardy is a quiz show that has a unique answer-and-question format in which co
 clues in the form of answers and must phrase their responses in the form of a question. 
 Please generate a jeopardy game. 
 
-Avoid repeat/similar answers in a category, and use information primarily from the content. There will be {NUM_CATEGORIES} categories 
-with {NUM_QUESTIONS_PER_CATEGORY} questions/answers each. There MUST be this exact number of categories and questions. Questions should be in 
+Avoid repeat/similar answers in a category, and use information primarily from the content. Prioritize varying the category types 
+to include as many individual SORCES as possible, not giving weight to the LENGTH of each source.
+Avoid answers that contain parts of the question, are too similar to the question, or are the category name. An example of a poor
+answer / question would be "This kind of cake has multiple layers" / "What is a multi-layer cake?". 
+There will be {NUM_CATEGORIES} categories with {NUM_QUESTIONS_PER_CATEGORY} questions/answers each.
+There MUST be this exact number of categories and questions. Questions should be in 
 order of increasing difficulty, where the final question in the list is the hardest.
 Respond in the following JSON format, with no text preceeding or following it.
 {_game_json_template()}

@@ -1,8 +1,14 @@
 import os
 import time
+from typing import List
+import json
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from werkzeug.utils import secure_filename
+
+from game import Game
+from prompts import NUM_CATEGORIES, NUM_QUESTIONS_PER_CATEGORY
+from data.failed import FAILED
 
 
 app = Flask(__name__)
@@ -22,17 +28,62 @@ def delay():
 
 @app.route("/game", methods=["POST"])
 def generate_game():
+    try:
+        filenames = _save_uploded_files()
+    except ValueError as e:
+        return Response(str(e), 400)
+
+    game = Game(filenames)
+    gemini_resp = game.generate()
+
+    try:
+        game_data = _parse_game_data(gemini_resp)
+    except Exception as e:
+        print(str(e))
+        print(gemini_resp)
+        return Response("Gemini produced an invalid response", 500)
+
+    game.cleanup()
+
+    return jsonify(game_data)
+
+
+def _save_uploded_files():
     uploaded_files = request.files.getlist("file")
 
     filenames = []
     for file in uploaded_files:
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-        filenames.append(filename)
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(filepath)
 
-    print(filenames)
-    return f"{filenames}"
+        filenames.append(filepath)
+
+    return filenames
+
+
+def _parse_game_data(resp: str):
+    stripped = resp.strip()
+    stripped = stripped.strip("\\")
+
+    try:
+        game = json.loads(stripped)
+    except:
+        game = json.loads(stripped[8:-3])  # remove markdown
+
+    assert len(game) == NUM_CATEGORIES
+
+    for category in game:
+        assert "category" in category
+        assert "questions" in category
+        assert len(category["questions"]) == NUM_QUESTIONS_PER_CATEGORY
+
+        for question in category["questions"]:
+            assert "answer" in question
+            assert "question" in question
+
+    return game
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=8000, debug=True)
