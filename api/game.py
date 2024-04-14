@@ -1,7 +1,6 @@
 from typing import List, Any
 
 import fitz
-from io import BytesIO
 from datetime import datetime
 import time
 import os
@@ -52,7 +51,9 @@ class Game:
             ext = os.path.splitext(f)[1].lower()
             match ext:
                 case ".pdf":
-                    self.content += self._extract_pdf_content(f, extract_images=False)
+                    self.content += self._extract_pdf_content(
+                        f, render_page_images=True
+                    )
                 case ".jpg" | ".jpeg" | ".png":
                     self.content.append(self._upload_file(f))
                 case _:
@@ -76,30 +77,28 @@ class Game:
 
         return upload_resp
 
-    def _extract_pdf_content(self, filename: str, extract_images: bool) -> List[Any]:
+    def _extract_pdf_content(
+        self, filename: str, render_page_images: bool
+    ) -> List[Any]:
         content = []
         pdf_file = fitz.open(filename)
 
         text = ""
         for page_index in range(len(pdf_file)):
             page = pdf_file[page_index]
+
             text += page.get_text()
 
-            if extract_images:
-                for img in page.get_images():
-                    xref = img[0]
+            if render_page_images:
+                pix = page.get_pixmap()
+                tmp_filepath = (
+                    f"tmp/{int(datetime.now().timestamp())}_{self._global_tmp_idx}.png"
+                )
 
-                    base_image = pdf_file.extract_image(xref)
-                    image_bytes = base_image["image"]
-                    image_ext = base_image["ext"]
+                pix.save(tmp_filepath)
 
-                    tmp_filepath = f"tmp/{int(datetime.now().timestamp())}_{self._global_tmp_idx}.{image_ext}"
-
-                    self._global_tmp_idx += 1
-                    with open(tmp_filepath, "wb") as file:
-                        file.write(BytesIO(image_bytes).getvalue())
-
-                    content.append(self._upload_file(path=tmp_filepath))
+                self._global_tmp_idx += 1
+                content.append(self._upload_file(tmp_filepath))
 
         content.append(text)
 
